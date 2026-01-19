@@ -19,7 +19,7 @@ class LocalStorageServiceImpl implements LocalStorageService {
   }
 
   @override
-  Future<Result<Unit>> remobeIdToken() async{
+  Future<Result<Unit>> removeIdToken() async{
     await _flutterSecureStorage.delete(key: 'id_token');
     return successOfUnit();
   }
