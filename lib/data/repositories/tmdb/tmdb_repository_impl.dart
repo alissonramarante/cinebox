@@ -3,6 +3,7 @@ import 'package:cinebox_app/core/result/result.dart';
 import 'package:cinebox_app/data/exceptions/data_exception.dart';
 import 'package:cinebox_app/data/mappers/movie_mappers.dart';
 import 'package:cinebox_app/data/services/tmdb/tmdb_service.dart';
+import 'package:cinebox_app/domain/models/genre.dart';
 import 'package:cinebox_app/domain/models/movie.dart';
 import 'package:dio/dio.dart';
 
@@ -87,6 +88,35 @@ class TmdbRepositoryImpl implements TmdbRepository {
       log('Erro ao buscar getUpComingMovies', error: e, stackTrace: s);
       return Failure(
         DataException(message: 'Erro ao buscar filmes em breve lançamento'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<List<Genre>>> getGenres() async {
+    try {
+      final data = await _tmdbService.getMoviesGenres();
+      final genres = data.genres
+          .map((g) => Genre(id: g.id, name: g.name))
+          .toList();
+      return Success(genres);
+    } on DioException catch (e, s) {
+      log('Erro ao buscar generos', error: e, stackTrace: s);
+      return Failure(DataException(message: 'Erro ao buscar generos'));
+    }
+  }
+
+  @override
+  Future<Result<List<Movie>>> getMoviesByGenres({required int genreId}) async {
+    try {
+      final data = await _tmdbService.dicoverMovies(
+        withGenres: genreId.toString(),
+      );
+      return Success(MovieMappers.mapToMovies(data));
+    } on DioException catch (e, s) {
+      log('Erro ao buscar filmes por genero', error: e, stackTrace: s);
+      return Failure(
+        DataException(message: 'Erro ao buscar filmes por genero'),
       );
     }
   }
