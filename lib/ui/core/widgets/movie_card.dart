@@ -4,7 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieCard extends ConsumerStatefulWidget {
-  const MovieCard({super.key});
+
+  final int id;
+  final String title;
+  final int year;
+  final String imageUrl;
+  final bool isFavorite;
+  final VoidCallback? onFavoriteTap;
+
+  const MovieCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.year,
+    required this.imageUrl,
+    required this.isFavorite,
+    this.onFavoriteTap,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MovieCardState();
@@ -23,7 +39,7 @@ class _MovieCardState extends ConsumerState<MovieCard> {
             children: [
               CachedNetworkImage(
                 imageUrl:
-                    'https://www.cafecomfilme.com.br/media/k2/items/cache/d376c73e0eaacbedeec411070de6fb74_XL.jpg',
+                    widget.imageUrl,
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     width: 148,
@@ -59,7 +75,7 @@ class _MovieCardState extends ConsumerState<MovieCard> {
                 height: 20,
               ),
               Text(
-                'Zootopia 2',
+                widget.title,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -68,7 +84,7 @@ class _MovieCardState extends ConsumerState<MovieCard> {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                '2026',
+                '${widget.year}',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w400,

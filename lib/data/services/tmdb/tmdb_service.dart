@@ -2,7 +2,8 @@ import 'package:cinebox_app/data/models/genre_response.dart';
 import 'package:cinebox_app/data/models/movie_details_response.dart';
 import 'package:cinebox_app/data/models/movie_response.dart';
 import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
+
 
 part 'tmdb_service.g.dart';
 
@@ -27,7 +28,8 @@ abstract class TmdbService {
     @Query('page') int page = 1,
   });
 
-  @GET("/movie/now_playing")
+  
+  @GET('/movie/now_playing')
   Future<MovieResponse> getNowPlayingMovies({
     @Query('language') String language = 'pt-BR',
     @Query('page') int page = 1,
@@ -55,9 +57,9 @@ abstract class TmdbService {
   });
 
   @GET('/movie/{movie_id}?include_image_language=pt,null')
-  Future<MovieDetailsResponse> getMovieDatails({
+  Future<MovieDetailsResponse> getMovieDatails(
+    @Path('movie_id') int movieId, {
     @Query('language') String language = 'pt-BR',
-    @Path('movie_id') int movieId,
     @Query('append_to_response') String appendToResponse = '',
   });
 }
