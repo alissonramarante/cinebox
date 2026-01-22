@@ -15,28 +15,34 @@ class MoviesAppbar extends ConsumerStatefulWidget {
 
 class _MoviesAppbarState extends ConsumerState<MoviesAppbar> {
 
-  Timer? _deboumce;
+  Timer? _debounce;
   final _searchController = TextEditingController();
   final _showClearButton = ValueNotifier<bool>(false);
 
   @override
   void initState() {
+    super.initState();
     _searchController.addListener(() {
       _showClearButton.value = _searchController.text.isNotEmpty;
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _searchController.dispose();
+    _showClearButton.dispose();
+    super.dispose();
   }
 
   void onSearchChanged(String query) {
-    if (query.isEmpty) {
-      _deboumce?.cancel();
-      ref.read(moviesViewModelProvider.notifier).fetchMoviesByCategory();
-      return;
-    }
-    if (_deboumce?.isActive ?? false) _deboumce?.cancel();
-    _deboumce = Timer(Duration(microseconds: 500), () {
-      FocusScope.of(context).unfocus();
-      ref.read(moviesViewModelProvider.notifier).fetchMoviesBySearch(query);
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (query.isEmpty) {
+        ref.read(moviesViewModelProvider.notifier).fetchMoviesByCategory();
+      } else {
+        ref.read(moviesViewModelProvider.notifier).fetchMoviesBySearch(query);
+      }
     });
   }
 

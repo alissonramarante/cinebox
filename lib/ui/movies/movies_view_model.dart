@@ -1,4 +1,3 @@
-import 'package:cinebox_app/domain/usecases/usecases_provider.dart';
 import 'package:cinebox_app/ui/movies/commands/get_movies_by_category_command.dart';
 import 'package:cinebox_app/ui/movies/commands/get_movies_by_genre_command.dart';
 import 'package:cinebox_app/ui/movies/commands/search_movies_by_name_command.dart';
