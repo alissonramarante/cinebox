@@ -41,15 +41,15 @@ class TmdbRepositoryImpl implements TmdbRepository {
     int page = 1,
   }) async {
     try {
-      final moviesData = await _tmdbService.getNowPlayingMovies(
+      final moviesData = await _tmdbService.getNowPlaingMovies(
         language: language,
         page: page,
       );
       return Success(MovieMappers.mapToMovies(moviesData));
     } on DioException catch (e, s) {
-      log('Erro ao buscar getNowPlayingMovies', error: e, stackTrace: s);
+      log('Erro ao buscar getPopularMovies', error: e, stackTrace: s);
       return Failure(
-        DataException(message: 'Erro ao buscar filmes em cartaz'),
+        DataException(message: 'Erro ao buscar os filmes populares'),
       );
     }
   }
@@ -66,9 +66,9 @@ class TmdbRepositoryImpl implements TmdbRepository {
       );
       return Success(MovieMappers.mapToMovies(moviesData));
     } on DioException catch (e, s) {
-      log('Erro ao buscar getTopRatedMovies', error: e, stackTrace: s);
+      log('Erro ao buscar getPopularMovies', error: e, stackTrace: s);
       return Failure(
-        DataException(message: 'Erro ao buscar filmes mais bem avaliados'),
+        DataException(message: 'Erro ao buscar os filmes populares'),
       );
     }
   }
@@ -85,9 +85,9 @@ class TmdbRepositoryImpl implements TmdbRepository {
       );
       return Success(MovieMappers.mapToMovies(moviesData));
     } on DioException catch (e, s) {
-      log('Erro ao buscar getUpComingMovies', error: e, stackTrace: s);
+      log('Erro ao buscar getPopularMovies', error: e, stackTrace: s);
       return Failure(
-        DataException(message: 'Erro ao buscar filmes em breve lançamento'),
+        DataException(message: 'Erro ao buscar os filmes populares'),
       );
     }
   }
@@ -109,7 +109,7 @@ class TmdbRepositoryImpl implements TmdbRepository {
   @override
   Future<Result<List<Movie>>> getMoviesByGenres({required int genreId}) async {
     try {
-      final data = await _tmdbService.dicoverMovies(
+      final data = await _tmdbService.discoverMovies(
         withGenres: genreId.toString(),
       );
       return Success(MovieMappers.mapToMovies(data));

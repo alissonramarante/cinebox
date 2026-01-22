@@ -12,7 +12,7 @@ class MoviesByCategory extends ConsumerWidget {
 
     return movies.when(
       loading: () => Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsetsGeometry.all(20),
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -26,25 +26,29 @@ class MoviesByCategory extends ConsumerWidget {
       data: (data) {
         if (data == null) {
           return Center(
-            child: Text('Nenhum filme encontrato'),
+            child: Text('Nenhum filme encontrado'),
           );
         }
+
         return Container(
-          padding: EdgeInsets.only(bottom: 130),
+          margin: EdgeInsets.only(bottom: 130),
           child: Column(
             children: [
               MoviesBox(
                 title: 'Mais Populares',
                 movies: data.popular,
               ),
+
               MoviesBox(
-                title: 'Melores Avaliados',
+                title: 'Melhores Avaliados',
                 movies: data.topRated,
               ),
+
               MoviesBox(
                 title: 'Em Cartaz',
                 movies: data.nowPlaying,
               ),
+
               MoviesBox(
                 title: 'Em Breve',
                 movies: data.upcoming,
