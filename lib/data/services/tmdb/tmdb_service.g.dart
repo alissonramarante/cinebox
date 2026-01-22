@@ -111,7 +111,7 @@ class _TmdbService implements TmdbService {
   }
 
   @override
-  Future<MovieResponse> getNowPlayingMovies({
+  Future<MovieResponse> getNowPlaingMovies({
     String language = 'pt-BR',
     int page = 1,
   }) async {
@@ -212,7 +212,7 @@ class _TmdbService implements TmdbService {
   }
 
   @override
-  Future<MovieResponse> dicoverMovies({
+  Future<MovieResponse> discoverMovies({
     String language = 'pt-BR',
     int page = 1,
     String sortBy = 'popularity.desc',
@@ -250,7 +250,7 @@ class _TmdbService implements TmdbService {
   }
 
   @override
-  Future<MovieDetailsResponse> getMovieDatails(
+  Future<MovieDetailsResponse> getMovieDetails(
     int movieId, {
     String language = 'pt-BR',
     String appendToResponse = '',

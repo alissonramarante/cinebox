@@ -17,7 +17,7 @@ final class GetMoviesByCategoryCommandProvider
     extends
         $NotifierProvider<
           GetMoviesByCategoryCommand,
-          AsyncValue<MoviesCategory?>
+          AsyncValue<MoviesByCategory?>
         > {
   GetMoviesByCategoryCommandProvider._()
     : super(
@@ -38,34 +38,39 @@ final class GetMoviesByCategoryCommandProvider
   GetMoviesByCategoryCommand create() => GetMoviesByCategoryCommand();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<MoviesCategory?> value) {
+  Override overrideWithValue(AsyncValue<MoviesByCategory?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<MoviesCategory?>>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<MoviesByCategory?>>(
+        value,
+      ),
     );
   }
 }
 
 String _$getMoviesByCategoryCommandHash() =>
-    r'93c9c2c630bf410890122230109f45c61b4cc52d';
+    r'167e90f95df061c9c70104c0a5fcabf6f3491792';
 
 abstract class _$GetMoviesByCategoryCommand
-    extends $Notifier<AsyncValue<MoviesCategory?>> {
-  AsyncValue<MoviesCategory?> build();
+    extends $Notifier<AsyncValue<MoviesByCategory?>> {
+  AsyncValue<MoviesByCategory?> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
         this.ref
-            as $Ref<AsyncValue<MoviesCategory?>, AsyncValue<MoviesCategory?>>;
+            as $Ref<
+              AsyncValue<MoviesByCategory?>,
+              AsyncValue<MoviesByCategory?>
+            >;
     final element =
         ref.element
             as $ClassProviderElement<
               AnyNotifier<
-                AsyncValue<MoviesCategory?>,
-                AsyncValue<MoviesCategory?>
+                AsyncValue<MoviesByCategory?>,
+                AsyncValue<MoviesByCategory?>
               >,
-              AsyncValue<MoviesCategory?>,
+              AsyncValue<MoviesByCategory?>,
               Object?,
               Object?
             >;

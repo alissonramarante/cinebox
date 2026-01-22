@@ -26,7 +26,5 @@ abstract interface class TmdbRepository {
 
   Future<Result<List<Genre>>> getGenres();
 
-  Future<Result<List<Movie>>> getMoviesByGenres({
-    required int genreId,
-  });
+  Future<Result<List<Movie>>> getMoviesByGenres({required int genreId});
 }

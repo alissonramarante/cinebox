@@ -1,7 +1,7 @@
 import 'package:cinebox_app/core/result/result.dart';
 import 'package:cinebox_app/data/repositories/tmdb/tmdb_repository.dart';
 import 'package:cinebox_app/domain/models/movie.dart';
-import 'package:cinebox_app/domain/models/movies_category.dart';
+import 'package:cinebox_app/domain/models/movies_by_category.dart';
 
 class GetMoviesByCategoryUsecase {
   final TmdbRepository _tmdbRepository;
@@ -9,11 +9,11 @@ class GetMoviesByCategoryUsecase {
   GetMoviesByCategoryUsecase({required TmdbRepository tmdbRepository})
     : _tmdbRepository = tmdbRepository;
 
-  Future<Result<MoviesCategory>> execute() async {
+  Future<Result<MoviesByCategory >> execute() async {
     final results = await Future.wait([
-      _tmdbRepository.getNowPlayingMovies(),
       _tmdbRepository.getPopularMovies(),
       _tmdbRepository.getTopRatedMovies(),
+      _tmdbRepository.getNowPlayingMovies(),
       _tmdbRepository.getUpComingMovies(),
     ]);
 
@@ -24,7 +24,7 @@ class GetMoviesByCategoryUsecase {
       Success<List<Movie>>(value: final upcoming),
     ]) {
       return Success(
-        MoviesCategory(
+        MoviesByCategory (
           popular: popular,
           topRated: topRated,
           nowPlaying: nowPlaying,
