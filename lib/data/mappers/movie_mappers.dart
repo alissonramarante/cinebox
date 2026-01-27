@@ -13,7 +13,7 @@ class MovieMappers {
         voteAverage: response.voteAverage,
         posterPath: response.posterPath,
         backdropPath: response.backdropPath,
-        releaseData: response.releaseDate,
+        releaseDate: response.releaseDate,
         ),
     ).toList();
   }

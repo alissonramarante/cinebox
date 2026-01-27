@@ -29,7 +29,7 @@ class MoviesBox extends StatelessWidget {
                 ).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.start,
           ),
         ),
         Visibility(
@@ -42,12 +42,13 @@ class MoviesBox extends StatelessWidget {
               children: [
                 for (var movie in movies)
                   MovieCard(
+                    key: UniqueKey(),
                     id: movie.id,
                     title: movie.title,
                     year:
-                        movie.releaseData != null &&
-                            movie.releaseData!.isNotEmpty
-                        ? DateTime.parse(movie.releaseData!).year
+                        movie.releaseDate != null &&
+                            movie.releaseDate!.isNotEmpty
+                        ? DateTime.parse(movie.releaseDate!).year
                         : DateTime.now().year,
                     imageUrl:
                         'https://images.tmdb.org/t/p/w154/${movie.posterPath}',
@@ -73,9 +74,9 @@ class MoviesBox extends StatelessWidget {
                     id: movie.id,
                     title: movie.title,
                     year:
-                        movie.releaseData != null &&
-                            movie.releaseData!.isNotEmpty
-                        ? DateTime.parse(movie.releaseData!).year
+                        movie.releaseDate != null &&
+                            movie.releaseDate!.isNotEmpty
+                        ? DateTime.parse(movie.releaseDate!).year
                         : DateTime.now().year,
                     imageUrl:
                         'https://images.tmdb.org/t/p/w154/${movie.posterPath}',

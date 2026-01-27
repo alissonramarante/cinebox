@@ -10,7 +10,7 @@ class Movie {
   final String? posterPath;
   final String? backdropPath;
   final double voteAverage;
-  final String? releaseData;
+  final String? releaseDate;
   final bool isFavorite;
 
   Movie({
@@ -21,7 +21,7 @@ class Movie {
     required this.voteAverage,
     this.posterPath,
     this.backdropPath,
-    this.releaseData,
+    this.releaseDate,
     this.isFavorite = false,
   });
 
@@ -35,7 +35,7 @@ class Movie {
     ValueGetter<String?>? posterPath,
     ValueGetter<String?>? backdropPath,
     double? voteAverage,
-    ValueGetter<String?>? releaseData,
+    ValueGetter<String?>? releaseDate,
     bool? isFavorite,
   }) {
     return Movie(
@@ -46,7 +46,7 @@ class Movie {
       posterPath: posterPath != null ? posterPath() : this.posterPath,
       backdropPath: backdropPath != null ? backdropPath() : this.backdropPath,
       voteAverage: voteAverage ?? this.voteAverage,
-      releaseData: releaseData != null ? releaseData() : this.releaseData,
+      releaseDate: releaseDate != null ? releaseDate() : this.releaseDate,
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }

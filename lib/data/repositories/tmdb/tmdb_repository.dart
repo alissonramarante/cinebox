@@ -1,6 +1,7 @@
 import 'package:cinebox_app/core/result/result.dart';
 import 'package:cinebox_app/domain/models/genre.dart';
 import 'package:cinebox_app/domain/models/movie.dart';
+import 'package:cinebox_app/domain/models/movie_detail.dart';
 
 abstract interface class TmdbRepository {
 
@@ -29,5 +30,7 @@ abstract interface class TmdbRepository {
   Future<Result<List<Movie>>> getMoviesByGenres({required int genreId});
 
   Future<Result<List<Movie>>> searchMovies({required String query});
+
+  Future<Result<MovieDetail>> getMovieDetail(int movieId);
 
 }

@@ -1,0 +1,78 @@
+import 'package:cinebox_app/ui/core/themes/text_style.dart';
+import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+class MovieTrailler extends StatefulWidget {
+
+  final String videoId;
+  const MovieTrailler({super.key, required this.videoId});
+
+  @override
+  State<MovieTrailler> createState() => _MovieTraillerState();
+}
+
+class _MovieTraillerState extends State<MovieTrailler> {
+
+  late YoutubePlayerController _controller;
+  bool _isPlayerVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 10,
+      children: [
+        Text(
+          'Trailer',
+          style: AppTextStyle.boldMedium,
+        ),
+        Center(
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(8),
+            clipBehavior: Clip.hardEdge,
+            child: Visibility(
+              visible: _isPlayerVisible,
+              replacement: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isPlayerVisible = true;
+                  });
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.network(
+                      YoutubePlayer.getThumbnail(
+                        videoId: widget.videoId,
+                        quality: ThumbnailQuality.medium,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                    Icon(
+                      Icons.play_circle_fill,
+                      color: Colors.white,
+                      size: 64,
+                    ),
+                  ],
+                ),
+              ),
+              child: YoutubePlayer(controller: _controller),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
