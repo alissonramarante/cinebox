@@ -136,7 +136,7 @@ class _MovieCardState extends ConsumerState<MovieCard> with LoaderAndMessage{
               radius: 20,
               backgroundColor: Colors.white,
               child: IconButton(
-                onPressed: () {
+                onPressed: widget.onFavoriteTap ??  () {
                   ref
                       .read(
                         movieCardViewModelProvider(
