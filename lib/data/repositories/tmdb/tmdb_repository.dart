@@ -30,5 +30,4 @@ abstract interface class TmdbRepository {
 
   Future<Result<List<Movie>>> searchMovies({required String query});
 
-
 }
