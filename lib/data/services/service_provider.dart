@@ -38,3 +38,4 @@ TmdbService tmdbService(Ref ref){
 MoviesService moviesService(Ref ref){
   return MoviesService(ref.read(backendRestClientProvider));
 }
+

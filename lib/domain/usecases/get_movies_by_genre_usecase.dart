@@ -1,19 +1,35 @@
 import 'package:cinebox_app/core/result/result.dart';
+import 'package:cinebox_app/data/repositories/movies/movies_repository.dart';
 import 'package:cinebox_app/data/repositories/tmdb/tmdb_repository.dart';
+import 'package:cinebox_app/domain/extensions/mark_favorite_extension.dart';
+import 'package:cinebox_app/domain/models/favorite_movie.dart';
 import 'package:cinebox_app/domain/models/movie.dart';
 
 class GetMoviesByGenreUsecase {
   final TmdbRepository _tmdbRepository;
+  final MoviesRepository _moviesRepository;
 
   GetMoviesByGenreUsecase({
     required TmdbRepository tmdbRepository,
+    required MoviesRepository moviesRepository,
     })
-    : _tmdbRepository = tmdbRepository;
+    : _tmdbRepository = tmdbRepository,
+    _moviesRepository = moviesRepository;
 
   Future<Result<List<Movie>>> execute({required int genreId}) async {
-    final moviesByGenreResult = await _tmdbRepository.getMoviesByGenres(
-      genreId: genreId,
-    );
-    return moviesByGenreResult;
+
+    final results = await Future.wait([
+      _moviesRepository.getMyFavoritesMovies(),
+      _tmdbRepository.getMoviesByGenres(genreId: genreId)
+    ]);
+
+    if(results case[
+      Success<List<FavoriteMovie>>(value: final favorites),
+      Success<List<Movie>>(value: final movieByGenre),
+    ]){
+      final favoritesIDs = favorites.map((f) => f.id).toList();
+      return Success(movieByGenre.markAsFavorite(favoritesIDs));
+    }
+    return Failure(Exception('Erro ao buscar os filmes por genero'));
   }
 }

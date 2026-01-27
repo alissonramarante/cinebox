@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cinebox_app/ui/core/commands/favorite_movie_command.dart';
+import 'package:cinebox_app/ui/core/commands/remove_favorite_movie_command.dart';
+import 'package:cinebox_app/ui/core/commands/save_favorite_movie_command.dart';
 import 'package:cinebox_app/ui/core/themes/colors.dart';
+import 'package:cinebox_app/ui/core/widgets/loader_messages.dart';
+import 'package:cinebox_app/ui/core/widgets/movie_card_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieCard extends ConsumerStatefulWidget {
-
   final int id;
   final String title;
   final int year;
@@ -26,9 +30,36 @@ class MovieCard extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MovieCardState();
 }
 
-class _MovieCardState extends ConsumerState<MovieCard> {
+class _MovieCardState extends ConsumerState<MovieCard> with LoaderAndMessage{
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(favoriteMovieCommandProvider(widget.id).notifier)
+          .setFavorite(widget.isFavorite);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isFavorite = ref.watch(favoriteMovieCommandProvider(widget.id));
+    
+    ref.listen(saveFavoriteMovieCommandProvider(widget.key!, widget.id), (_, next){
+      next.whenOrNull(error: (error, stackTrace) {
+        showErrorSnackbar('Desculpe não foi possivel adicionar seu filme no favorito');
+      },);
+
+    });
+
+    ref.listen(removeFavoriteMovieCommandProvider(widget.key!, widget.id), (_, next){
+      next.whenOrNull(error: (error, stackTrace) {
+        showErrorSnackbar('Desculpe não foi possivel remover seu filme no favorito');
+      },);
+
+    });
+
+
     return Stack(
       children: [
         SizedBox(
@@ -38,8 +69,7 @@ class _MovieCardState extends ConsumerState<MovieCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CachedNetworkImage(
-                imageUrl:
-                    widget.imageUrl,
+                imageUrl: widget.imageUrl,
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     width: 148,
@@ -106,9 +136,25 @@ class _MovieCardState extends ConsumerState<MovieCard> {
               radius: 20,
               backgroundColor: Colors.white,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ref
+                      .read(
+                        movieCardViewModelProvider(
+                          widget.key!,
+                          widget.id,
+                        ).notifier,
+                      )
+                      .addOrRemoveFavorite(
+                        id: widget.id,
+                        title: widget.title,
+                        posterPath: widget.imageUrl,
+                        year: widget.year,
+                        favorite: !isFavorite,
+                      );
+                },
                 icon: Icon(
-                  Icons.favorite_border,
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? AppColors.redColor : AppColors.lightGrey,
                   size: 16,
                 ),
               ),

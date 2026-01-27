@@ -10,19 +10,19 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'reprositories_providers.g.dart';
 
 @riverpod
-AuthRepository authRepository(Ref ref){
+AuthRepository authRepository(Ref ref) {
   return AuthRepositoryImpl(
-    localStorageService: ref.read(localStorageServiceProvider), 
+    localStorageService: ref.read(localStorageServiceProvider),
     googleSigninService: ref.read(googleSigninServiceProvider),
     authService: ref.read(authServiceProvider),
-    );
+  );
 }
 
 @riverpod
-TmdbRepository tmdbRepository (Ref ref){
+TmdbRepository tmdbRepository(Ref ref) {
   return TmdbRepositoryImpl(tmdbService: ref.read(tmdbServiceProvider));
 }
 
 @riverpod
 MoviesRepository moviesRepository(Ref ref) =>
-MoviesRepositoryImpl(moviesSevices: ref.read(moviesServiceProvider));
+    MoviesRepositoryImpl(moviesSevices: ref.read(moviesServiceProvider));

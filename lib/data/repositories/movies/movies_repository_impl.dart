@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cinebox_app/core/result/result.dart';
 import 'package:cinebox_app/data/exceptions/data_exception.dart';
+import 'package:cinebox_app/data/models/save_favorite_movie.dart';
 import 'package:cinebox_app/data/services/movies/movies_service.dart';
 import 'package:cinebox_app/domain/models/favorite_movie.dart';
 import 'package:dio/dio.dart';
@@ -34,6 +35,37 @@ class MoviesRepositoryImpl implements MoviesRepository {
       log('Error ao buscar os filmes favoritos', error: e, stackTrace: s);
       return Failure(
         DataException(message: 'Error ao buscar os filmes favoritos'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<Unit>> deleteFavoriteMovie(int movieId) async {
+    try {
+      await _moviesService.deleteFavoriteMovie(movieId);
+      return successOfUnit();
+    } on DioException catch (e, s) {
+      log('Erro ao deletar favorito', error: e, stackTrace: s);
+      return Failure(DataException(message: 'Erro ao deletar favorito'));
+    }
+  }
+
+  @override
+  Future<Result<Unit>> saveFavoriteMovie(FavoriteMovie favoriteMovie) async {
+    try {
+      await _moviesService.saveFavoriteMovie(
+        SaveFavoriteMovie(
+          movieId: favoriteMovie.id,
+          posterUrl: favoriteMovie.posterPath,
+          title: favoriteMovie.title,
+          year: favoriteMovie.year,
+        ),
+      );
+      return successOfUnit();
+    } on DioException catch (e, s) {
+      log('Erro ao salvar filme nos favorito', error: e, stackTrace: s);
+      return Failure(
+        DataException(message: 'Erro ao salvar filme no favorito'),
       );
     }
   }
